@@ -14,5 +14,10 @@ then
     echo "PostgreSQL iniciado"
 fi
 
+#
+# Corre las migraciones
+#
+python manage.py migrate --noinput || exit 1
+
 # Ejecuta los parametros pasados en el tag ENTRYPOINT de dockerfile
 exec "$@"
