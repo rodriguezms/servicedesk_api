@@ -92,3 +92,5 @@ migrations/
 
 .env.prod
 .env.prod.db
+.env.dev
+.env.dev.db
