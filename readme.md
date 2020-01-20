@@ -1,5 +1,22 @@
 # API
 
+## Test
+
+Finalizar y eliminar imagenes, networks y volumenes asociados:
+```bash
+docker-compose -f docker-compose.test.yml down -v
+```
+
+Crear las imagenes y ejecutar test:
+```bash
+docker-compose -f docker-compose.test.yml up -d --build
+```
+
+Ver el resultado
+```bash
+docker-compose -f docker-compose.test.yml logs web
+```
+
 ## Instalacion
 
 Finalizar y eliminar imagenes, networks y volumenes asociados:
@@ -10,11 +27,6 @@ docker-compose down -v
 Crear las imagenes y ejecutar contenedores:
 ```bash
 docker-compose up -d --build
-```
-
-Correr las migraciones:
-```bash
-docker-compose exec web python manage.py migrate --noinput
 ```
 
 ## Consulta una palabra y retorna los resultados:
