@@ -5,12 +5,12 @@ import configparser
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ')mkg3wa^b8&2_oox355!$ae7ko^kww4=mgf%z+e=o6wnd28k(s'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get("DEBUG", default=0))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 
 # Application definition
@@ -61,9 +61,13 @@ WSGI_APPLICATION = 'invGateProject.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    "default": {
+        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
+        "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
+        "USER": os.environ.get("SQL_USER", "user"),
+        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
+        "HOST": os.environ.get("SQL_HOST", "localhost"),
+        "PORT": os.environ.get("SQL_PORT", "5432"),
     }
 }
 
@@ -106,3 +110,9 @@ STATIC_URL = '/static/'
 config_file = os.path.join(BASE_DIR, 'api.ini')
 config = configparser.ConfigParser()
 config.read(config_file)
+
+# Valida la configuracion
+username = os.environ.get('USER', '')
+password = os.environ.get('PASSWORD', '')
+if username is None or password is None:
+    exit(1)
