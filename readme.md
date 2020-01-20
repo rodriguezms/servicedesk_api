@@ -1,5 +1,15 @@
 # API
 
+## Dependencias
+
+Archivos necesarios
+`
+.env.prod
+.env.prod.db
+.env.dev
+.env.dev.deb
+`
+
 ## Test
 
 Finalizar y eliminar imagenes, networks y volumenes asociados:
