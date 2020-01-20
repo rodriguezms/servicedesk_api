@@ -1,6 +1,8 @@
 from django.views import View
 from invGateProject import settings
 from django.http import HttpResponse
+from django.db.models import Max
+from django.db.models.functions import Greatest
 
 from .models import WordCounter
 
@@ -58,11 +60,29 @@ class WordView(View):
         # Retorna el resultado
         return HttpResponse(json.dumps({'status': 'success', 'result': '{:d}'.format(count_result)}),
                             status=200,
-                            content_type="application/json")
+                            content_type='application/json')
 
 
 class MostWantedView(View):
 
     def get(self, request):
-        pass
+
+        args = WordCounter.objects.all()
+        result_query = args.aggregate(Max('count'))
+
+        result_count = None
+        if 'count__max' in result_query:
+            result_count = result_query['count__max']
+
+            words = WordCounter.objects.filter(count=result_count)
+            word_list = []
+            for w in words:
+                word_list.append(w.word)
+               
+        return HttpResponse(json.dumps({'status': 'success', 
+                                        'result': { 'count': result_count, 'word_list': word_list }
+                                }),
+                            status=200,
+                            content_type='application/json')
+
    
