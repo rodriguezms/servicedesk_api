@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class WordView(View):
-    
+
     def get(self, request):
 
         # Valida el parametro de entrada
@@ -37,11 +37,11 @@ class WordView(View):
             'keywords': word,
             'limit': 0,
         }
-        req = requests.get(api_url, 
+
+        req = requests.get(api_url,
                            headers=headers,
                            params=body,
-                           auth=(settings.config['auth']['user'], settings.config['auth']['password'])
-                           )
+                           auth=(settings.username, settings.password))
 
         count_result = 0
         if req.status_code == 200:
@@ -56,7 +56,7 @@ class WordView(View):
         else:
             wordObj.count += 1
         wordObj.save()
-        
+
         # Retorna el resultado
         return HttpResponse(json.dumps({'status': 'success', 'result': '{:d}'.format(count_result)}),
                             status=200,
@@ -78,11 +78,8 @@ class MostWantedView(View):
             word_list = []
             for w in words:
                 word_list.append(w.word)
-               
-        return HttpResponse(json.dumps({'status': 'success', 
-                                        'result': { 'count': result_count, 'word_list': word_list }
-                                }),
+
+        return HttpResponse(json.dumps({'status': 'success',
+                                        'result': {'count': result_count, 'word_list': word_list}}),
                             status=200,
                             content_type='application/json')
-
-   
