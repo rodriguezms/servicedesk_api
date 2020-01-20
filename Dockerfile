@@ -1,7 +1,8 @@
-###########
-# BUILDER #
-###########
-
+#
+# Dockerfile multi-stage
+#
+# Primero se crea imagen para generar la libreria de distribucion de la app
+#
 FROM python:3.8.0-alpine as builder
 
 # Setea el directorio de trabajo
@@ -29,11 +30,9 @@ RUN flake8 --ignore=E501,F401 .
 COPY ./requirements.txt .
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
 
-
-#########
-# FINAL #
-#########
-
+#
+# Segundo se crea la imagen que corre la aplicacion
+#
 FROM python:3.8.0-alpine
 
 ENV HOME=/home/app
@@ -72,5 +71,5 @@ USER app
 # Ejecuta entrypoint.prod.sh
 ENTRYPOINT ["/home/app/web/entrypoint.prod.sh"]
 
-
+# Comando para levantar gunicorn como servidor de aplicaciones, en el puerto 8000 y con 3 workers
 CMD ["gunicorn", "--bind", ":8000", "--workers", "3", "invGateProject.wsgi:application"]
