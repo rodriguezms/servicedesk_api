@@ -105,6 +105,8 @@ class MostWantedView(View):
                 word_list.append(w.word)
 
         # Resultado exitoso
+        if result_count is None:
+            result_count = 0
         return HttpResponse(json.dumps({'status': 'success',
                                         'result': {'count': result_count, 'word_list': word_list}}),
                             status=200,
