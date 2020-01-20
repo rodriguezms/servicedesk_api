@@ -3,12 +3,10 @@
 ## Dependencias
 
 Archivos necesarios
-`
-.env.prod
-.env.prod.db
-.env.dev
-.env.dev.deb
-`
+* .env.prod
+* .env.prod.db
+* .env.dev
+* .env.dev.db
 
 ## Test
 
